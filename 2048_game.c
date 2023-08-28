@@ -31,6 +31,10 @@ void newGame(){
 
 }
 
+void moveApply(int direction){
+	
+
+}
 
 void print(){
 	
@@ -41,6 +45,7 @@ void print(){
 		}
 		printf("\n");
 	}
+	printf(" enter the character to give command as follows :- \n  new game: n  \n  quit the game: q \n move upwards: w \n move downwords: s \n move left: a \n move right: d \n");
 }
 
 int main(){
@@ -49,18 +54,23 @@ int main(){
 	instruction['d']=1;
 	instruction['w']=2;
 	instruction['a']=3;
+	
+	char command;
+	bool flag=0;
 	while(true){
-		system("clear");
+		//system("clear");
 		print();
-		char command;
-		printf(" enter the character to give command as follows :- \n  new game: n  \n  quit the game: q \n move upwards: w \n move downwords: s \n move left: a \n move right: d \n"); 
-		scanf("%c",&command);
-		printf("%c",command);
-		if(command=='n')newGame();
+		//scanf("%c",&command);
+		command=getchar();
+		if(command=='n'){
+			newGame();
+			flag=1;
+			}
 		else if(command=='q')break;
-		//else {
-		//	printf("%d",instruction[command]);
-			//}
+		else if(flag==1 ){	
+				int currentDir=instruction[command];
+				moveApply(currentDir);
+			}
 	}
 	
 	return 0;
