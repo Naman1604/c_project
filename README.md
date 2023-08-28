@@ -11,7 +11,7 @@ The project aims to develop a command-line interface (CLI) version of the popula
 - Enhance user experience by displaying the game board with the help of matrix.
 - Ensure the game adheres to the rules of 2048, including tile merging and random tile generation.
 
-## Features
+## Specifications
 
 1. **CLI Interface:** Develop a text-based interface that allows users to interact with the game using their keyboard.
 
@@ -29,7 +29,7 @@ The project aims to develop a command-line interface (CLI) version of the popula
 
 8. **Readability:** Use meaningful variable names, appropriate comments, and organized code to ensure code readability and maintainability.
 
-## Implementation Steps
+## Game Design
 
 1. **Setting Up the Project:**
    - Create the necessary C files `2048.c`.
