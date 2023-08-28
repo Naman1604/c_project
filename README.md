@@ -32,7 +32,7 @@ The project aims to develop a command-line interface (CLI) version of the popula
 ## Implementation Steps
 
 1. **Setting Up the Project:**
-   - Create the necessary C files`2048.c`.
+   - Create the necessary C files `2048.c`.
 
 2. **Board and Tile Generation:**
    - Define the game board data structure.
