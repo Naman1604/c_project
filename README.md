@@ -1,4 +1,4 @@
-#2048 Game (CLI Version) in C
+# 2048 Game (CLI Version) in C
 
 ## Project Description
 
