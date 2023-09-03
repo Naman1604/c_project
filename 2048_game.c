@@ -7,17 +7,35 @@
 int board[4][4];
 int score=0;
 void emptyPosition() {
-int a=0,b=0;
-    int filled = 1;
-    while (filled) {
-        //srand(time(NULL));
-        a = rand() % 4;
-        b = rand() % 4;
-        if (board[a][b] == 0) {
-            filled = 0;
+    // Create an array to store the coordinates of empty cells
+    int emptyCells[16][2];
+    int emptyCount = 0;
+
+    // Find and store the coordinates of empty cells
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (board[i][j] == 0) {
+                emptyCells[emptyCount][0] = i;
+                emptyCells[emptyCount][1] = j;
+                emptyCount++;
+            }
         }
     }
-     board[a][b] = 2;
+
+    // If there are no empty cells, return (game over)
+    if (emptyCount == 0) {
+        return;
+    }
+
+    // Generate a random index to choose an empty cell
+    int randomIndex = rand() % emptyCount;
+
+    // Generate a random value (2 or 4)
+    int randomValue = (rand() % 2 + 1) * 2;
+
+    // Place the random value in the chosen empty cell
+    board[emptyCells[randomIndex][0]][emptyCells[randomIndex][1]] = randomValue;
+
 }
 
 
@@ -142,14 +160,33 @@ void moveDown() {
         }
     }
 }
+bool hasWon() {
+    // Loop through the board to check if any tile has the value 2048
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (board[i][j] == 2048) {
+                return 1; // Player has won
+            }
+        }
+    }
+    return 0; // Player has not won yet
+}
 
 bool endGame(bool flag){
-	if(flag==0){ 
+	if(flag==0 && !hasWon()){ 
 	printf("                    GAME OVER \n \n");
 	printf("       YOUR SCORE IS: %d ",score);
-	printf("    To play again please restart the game\n");		
+	printf("    To play again please restart the game\n");
+	
+	return true;		
 	}
-	return true;
+	else if(hasWon()){
+		printf("                    CONGRATS U HAVE WON!!  :) \n \n");
+		printf("       YOUR SCORE IS: %d ",score);
+		printf("    To play again please restart the game\n");
+		return true;
+	}
+	return false;
 }
 bool hasLost(){
     // Check if there are any empty cells
@@ -174,7 +211,7 @@ bool hasLost(){
     return false; // Player has lost
 }
 
-void moveApply(int direction) {
+bool moveApply(int direction) {
     // Determine the step for row and column iteration based on direction
     if (direction == 3) {
         moveLeft();
@@ -185,15 +222,14 @@ void moveApply(int direction) {
     } else if (direction == 0) {
         moveDown();
     }
-    bool f=hasLost();
-	endGame(f);
+    
     //
     //int a = 0, b = 0;
     emptyPosition();
     
     //board[a][b] = 2;
-    f=hasLost();
-    endGame(f);
+    
+    return endGame(hasLost());
 }
 
 
@@ -233,7 +269,7 @@ int main() {
     char command;
     bool flag = 0;
     while (true) {
-         system("clear");
+         //system("clear");
         print();
         command = getchar();
         if (command == 'n') {
@@ -243,9 +279,10 @@ int main() {
         printf("    GAME OVER! \n    YOUR SCORE IS %d \n",score);
             break;
         } 
-        else if (flag == 1) {
+        else if (flag == 1 && (command=='a' || command=='w' || command=='s'  ||command=='d')) {
             int currentDir = instruction[command];
-            moveApply(currentDir);
+            
+            if(moveApply(currentDir))break;;
         }
         int inputChar;
         while ((inputChar = getchar()) != '\n' && inputChar != EOF) {
