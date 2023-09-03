@@ -235,12 +235,13 @@ bool moveApply(int direction) {
 
 
 
-void print() {
-	printf("Score : %d \n \n",score);
+void print(bool flag) {
+	printf("\n \n                SCORE : %d \n \n",score);
     
-    printf("------------------------------\n");
+    printf(".___________________________.\n");
 
     for (int i = 0; i < 4; i++) {
+    	printf("|      |      |      |      |\n");
         for (int j = 0; j < 4; j++) {
             printf("|");
             if (board[i][j] == 0)
@@ -249,15 +250,17 @@ void print() {
                 printf("%4d  ", board[i][j]);
         }
         printf("|\n");
-        printf("------------------------------\n");
+        printf("|______|______|______|______|\n");
     }
-    printf("Enter the character to give command as follows:\n");
+    if(flag==0){
+    	printf("Enter the character to give command as follows:\n");
     printf("New game: n\n");
     printf("Quit the game: q\n");
     printf("Move upwards: w\n");
     printf("Move downwards: s\n");
     printf("Move left: a\n");
     printf("Move right: d\n");
+    }
 }
 
 int main() {
@@ -269,8 +272,8 @@ int main() {
     char command;
     bool flag = 0;
     while (true) {
-         //system("clear");
-        print();
+         system("clear");
+        print(flag);
         command = getchar();
         if (command == 'n') {
             newGame();
