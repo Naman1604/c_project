@@ -1,11 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <string.h>
 #include <stdbool.h>
 #include <time.h>
 
+
+void newGame(); 
+void emptyPosition();
+void copy();
+bool moveApply(int direction);
+void moveLeft();
+void moveRight();
+void moveUP();
+void moveDown();
+bool checkAnyDifference();
+bool hasWon();
+bool hasLost();
+bool endGame(bool flag);
+void print(bool flag);
+
 int board[4][4];
+int copyBoard[4][4];
 int score=0;
+
+
+void newGame() {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            board[i][j] = 0;
+        }
+    }
+    
+    emptyPosition();
+    emptyPosition();
+    
+}
+
 void emptyPosition() {
     // Create an array to store the coordinates of empty cells
     int emptyCells[16][2];
@@ -38,18 +67,36 @@ void emptyPosition() {
 
 }
 
-
-void newGame() {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            board[i][j] = 0;
-        }
-    }
-    //int a = 0, b = 0;
-    emptyPosition();
-    emptyPosition();
-    //board[a][b] = 2;
+void copy(){
+ 	for(int i=0;i<4;i++){
+ 		for(int j=0;j<4;j++){
+ 			copyBoard[i][j]=board[i][j];
+ 		} 
+ 	}
 }
+
+bool moveApply(int direction) {
+	
+     copy(); //copy the  board grid into copying the another matirx
+    
+    // Determine the  calling of function based on direction
+    if (direction == 3) {
+        moveLeft();
+    } else if (direction == 1) {
+        moveRight();
+    } else if (direction == 2) {
+       moveUP();
+    } else if (direction == 0) {
+        moveDown();
+    }
+    
+    //checking copy matrix and original board 
+    if(checkAnyDifference())emptyPosition();
+    
+    //calling endgame function while returning as to when stop the game;
+    return endGame(hasLost());
+}
+
 
 void moveLeft() {
     for (int i = 0; i < 4; i++) {
@@ -160,6 +207,18 @@ void moveDown() {
         }
     }
 }
+
+
+bool checkAnyDifference(){
+	for(int i=0;i<4;i++){
+ 		for(int j=0;j<4;j++){
+ 			if(copyBoard[i][j]!=board[i][j])return true;
+ 		} 
+ 	}
+ 	return false;
+}
+
+
 bool hasWon() {
     // Loop through the board to check if any tile has the value 2048
     for (int i = 0; i < 4; i++) {
@@ -172,22 +231,6 @@ bool hasWon() {
     return 0; // Player has not won yet
 }
 
-bool endGame(bool flag){
-	if(flag==0 && !hasWon()){ 
-	printf("                    GAME OVER \n \n");
-	printf("       YOUR SCORE IS: %d ",score);
-	printf("    To play again please restart the game\n");
-	
-	return true;		
-	}
-	else if(hasWon()){
-		printf("                    CONGRATS U HAVE WON!!  :) \n \n");
-		printf("       YOUR SCORE IS: %d ",score);
-		printf("    To play again please restart the game\n");
-		return true;
-	}
-	return false;
-}
 bool hasLost(){
     // Check if there are any empty cells
     for (int i = 0; i < 4; i++) {
@@ -200,10 +243,10 @@ bool hasLost(){
     }
 
     // Check if there are any adjacent tiles with the same value (valid moves)
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            if (board[i][j] == board[i + 1][j] || board[i][j] == board[i][j + 1]) {
-                return true; // There's at least one valid move, game can continue
+    for (int i = 0; i < 4; i++) {
+    	for(int j=0;j<4;j++){
+        if (( i<3 && board[i][j] == board[i + 1][j] ) || (j<3 && board[i][j] == board[i][j + 1] )) {
+                return true;  // There's at least one valid move, game can continue
             }
         }
     }
@@ -211,28 +254,24 @@ bool hasLost(){
     return false; // Player has lost
 }
 
-bool moveApply(int direction) {
-    // Determine the step for row and column iteration based on direction
-    if (direction == 3) {
-        moveLeft();
-    } else if (direction == 1) {
-        moveRight();
-    } else if (direction == 2) {
-       moveUP();
-    } else if (direction == 0) {
-        moveDown();
-    }
-    
-    //
-    //int a = 0, b = 0;
-    emptyPosition();
-    
-    //board[a][b] = 2;
-    
-    return endGame(hasLost());
+
+
+bool endGame(bool flag){
+	if(flag==0 && !hasWon()){ 
+	printf("                    GAME OVER \n \n");
+	printf("       YOUR SCORE IS: %d \n ",score);
+	printf("    To play again \n    please restart the game\n");
+	
+	return true;		
+	}
+	else if(hasWon()){
+		printf("                    CONGRATS U HAVE WON!!  :) \n \n");
+		printf("       YOUR SCORE IS: %d ",score);
+		printf("    To play again \n    please restart the game\n");
+		return true;
+	}
+	return false;
 }
-
-
 
 
 void print(bool flag) {
