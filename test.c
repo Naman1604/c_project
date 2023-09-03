@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <string.h>
+#include <string.h>
 #include <stdbool.h>
 #include <time.h>
 
@@ -121,9 +121,6 @@ void moveDown() {
                 if (board[i][j] == board[mergeIndex][j]) {
                     board[mergeIndex][j] *= 2;
                     
-                   
-                            
-                    
                     score+=board[mergeIndex][j];
                     
                     board[i][j] = 0;
@@ -143,77 +140,35 @@ void moveDown() {
     }
 }
 
-bool endGame(bool flag){
-	if(flag==0){ 
-	printf("                    GAME OVER \n \n");
-	printf("       YOUR SCORE IS: %d ",score);
-	printf("    To play again please restart the game\n");		
-	}
-	return true;
-}
-bool hasLost(){
-    // Check if there are any empty cells
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (board[i][j] == 0) {
-                return true; 
-            // There is at least one empty cell, game can  continue
-            }
-        }
-    }
-
-    // Check if there are any adjacent tiles with the same value (valid moves)
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            if (board[i][j] == board[i + 1][j] || board[i][j] == board[i][j + 1]) {
-                return true; // There's at least one valid move, game can continue
-            }
-        }
-    }
-
-    return false; // Player has lost
-}
-
-void moveApply(int direction) {
+void moveApply(char direction) {
     // Determine the step for row and column iteration based on direction
-    if (direction == 3) {
+    if (direction == 68) {
         moveLeft();
-    } else if (direction == 1) {
+    } else if (direction == 67) {
         moveRight();
-    } else if (direction == 2) {
+    } else if (direction == 65) {
        moveUP();
-    } else if (direction == 0) {
+    } else if (direction == 66) {
         moveDown();
     }
-    bool f=hasLost();
-	endGame(f);
+
     //
     //int a = 0, b = 0;
     emptyPosition();
-    
     //board[a][b] = 2;
-    f=hasLost();
-    endGame(f);
 }
-
-
-
 
 void print() {
 	printf("Score : %d \n \n",score);
-    
-    printf("------------------------------\n");
-
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            printf("|");
-            if (board[i][j] == 0)
-                printf("      ");
-            else
-                printf("%4d  ", board[i][j]);
+            if (board[i][j]) {
+                printf("%d  ", board[i][j]);
+            } else {
+                printf(".  ");
+            }
         }
-        printf("|\n");
-        printf("------------------------------\n");
+        printf("\n");
     }
     printf("Enter the character to give command as follows:\n");
     printf("New game: n\n");
@@ -230,7 +185,9 @@ int main() {
     instruction['d'] = 1;
     instruction['w'] = 2;
     instruction['a'] = 3;
+
     char command;
+    
     bool flag = 0;
     while (true) {
          system("clear");
@@ -245,7 +202,7 @@ int main() {
         } 
         else if (flag == 1) {
             int currentDir = instruction[command];
-            moveApply(currentDir);
+            moveApply(command);
         }
         int inputChar;
         while ((inputChar = getchar()) != '\n' && inputChar != EOF) {
